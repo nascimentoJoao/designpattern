@@ -28,7 +28,7 @@ public class Carrinho implements ProdutoDescontoObserver{
 	@Override
 	public void descontar(ProdutoDescontoEvent event) {
 		System.out.println("Aplicando desconto  no produto: " + event.getProduto().getNome());
-		event.getProduto().setValor(event.getProduto().getValor() - 2);
+		event.getProduto().setValor(event.getProduto().getValor() - 2.00);
 	}
 
 }

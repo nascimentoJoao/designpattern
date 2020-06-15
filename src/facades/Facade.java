@@ -3,14 +3,17 @@ package facades;
 import java.util.Date;
 import java.util.Scanner;
 
+import concretefactory.ConcreteFactoryPagamento;
 import controller.CaixaController;
 import controller.CarrinhoController;
 import interfaces.IFacade;
 import interfaces.ProdutoDescontoObserver;
 import model.Carrinho;
+import model.Cartao;
 import model.Produto;
 import observer.CaixaMercado;
 import observer.ProdutoDescontoEvent;
+import view.ClientePagamento;
 
 public class Facade implements IFacade {
 	
@@ -44,7 +47,14 @@ public class Facade implements IFacade {
 		while(executar) {
 			cod = scanner.nextInt();
 			if(cod == 9) { encerrar_aplicacao(); }
-			else {
+			if(cod == 4) { 
+				System.out.println("Tentando executar o pagamento...");
+				Cartao cartao_cliente = new Cartao("42841641245017437");
+				
+				Boolean pagamento_resultado = realizar_pagamento(cartao_cliente, "credito");
+				mensagem_validacao_cartao(pagamento_resultado);
+				
+			} else {
 				Produto prod = gerar_produto(cod);
 				adicionar_item_carrinho(prod);
 			}
@@ -90,6 +100,22 @@ public class Facade implements IFacade {
 		
 		return prod;
 	}
-	
 
+	@Override
+	public Boolean realizar_pagamento(Cartao cartao, String tipo) {
+		
+		ConcreteFactoryPagamento factory = new ConcreteFactoryPagamento();
+		ClientePagamento pgto = new ClientePagamento(factory);
+		
+		return pgto.pagar(cartao, tipo);
+	}
+	
+	private void mensagem_validacao_cartao(Boolean resultado) {
+		if(resultado) {
+			System.out.println("O cartão é válido!");
+		}else {
+			System.out.println("O cartão não é válido. Insira outro cartão ou informe outro meio de pagamento.");
+		}
+	}
+	
 }

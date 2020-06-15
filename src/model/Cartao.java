@@ -12,13 +12,9 @@ public class Cartao {
 	
 	private String bandeira;
 	
-	public Cartao(String titular, String numero, String validade, String codigo_verificador, String bandeira) {
+	public Cartao(String numero) {
 		super();
-		this.titular = titular;
 		this.numero = numero;
-		this.validade = validade;
-		this.codigo_verificador = codigo_verificador;
-		this.bandeira = bandeira;
 	}
 
 	public String getTitular() {
